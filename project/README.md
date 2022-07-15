@@ -38,6 +38,24 @@ Clone the appropriate git repo with the starter code. There will be 2 folders. Z
 
     - Make note of the ami output from the above 2 commands. You'll need to put this in the `ec2.tf` file for `zone1` for `us-east-2` and in `ec2.tf` file for `zone2` for `us-west-1` respectively
 
+
+    RESULT
+    ```json
+    [cloudshell-user@ip-10-0-121-142 ~]$ aws ec2 create-restore-image-task --object-key ami-0ec6fdfb365e5fc00.bin --bucket udacity-srend --name "udacity-zenardi"
+        {
+            "ImageId": "ami-032db5f00a28190df"
+        }
+    [cloudshell-user@ip-10-0-121-142 ~]$ aws ec2 copy-image --source-image-id ami-032db5f00a28190df --source-region us-east-1 --region us-east-2 --name "udacity-zenardi"
+        {
+            "ImageId": "ami-07b3b476f01a14d01"
+        }
+    [cloudshell-user@ip-10-0-121-142 ~]$ aws ec2 copy-image --source-image-id ami-032db5f00a28190df --source-region us-east-1 --region us-west-1 --name "udacity-zenardi"
+        {
+            "ImageId": "ami-033d66d46ca2a101d"
+        }
+
+    ```
+__
     <!-- - Set your aws cli config to `us-east-2` -->
 
 3. Close your CloudShell. Change your region to `us-east-2`. From the AWS console create an S3 bucket in `us-east-2` called `udacity-tf-<your_name>` e.g `udacity-tf-tscotto`
@@ -72,7 +90,7 @@ Clone the appropriate git repo with the starter code. There will be 2 folders. Z
     - `mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin`
     - `echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc`
 
-7. Deploy Terraform infrastructure
+__(TODO)__ 7. Deploy Terraform infrastructure
     - Clone the starter code from the git repo to a folder CloudShell
     - `cd` into the `zone1` folder
     - `terraform init`
@@ -80,6 +98,7 @@ Clone the appropriate git repo with the starter code. There will be 2 folders. Z
 
 **NOTE** The first time you run `terraform apply` you may see errors about the Kubernetes namespace or an RDS error. Running it again AND performing the step below should clear up those errors.
 
+__(TODO)__ 
 8. Setup Kubernetes config so you can ping the EKS cluster
    - `aws eks --region us-east-2 update-kubeconfig --name udacity-cluster`
    - Change kubernetes context to the new AWS cluster
@@ -90,7 +109,7 @@ Clone the appropriate git repo with the starter code. There will be 2 folders. Z
    <!-- - Change context to `udacity` namespace
      - `kubectl config set-context --current --namespace=udacity` -->
 
-<!-- 5. Once the script finishes **Configure nginx** 
+<!-- 5. Once the script finishes **Configure nginx**
 `sudo nano /etc/nginx/sites-enabled/default`
 
 ```

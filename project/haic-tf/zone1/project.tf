@@ -33,3 +33,12 @@ resource "kubernetes_namespace" "udacity" {
     module.project_eks
   ]
 }
+
+resource "kubernetes_namespace" "ns_monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+  depends_on = [
+    module.project_eks
+  ]
+} 
