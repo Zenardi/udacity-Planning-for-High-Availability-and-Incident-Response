@@ -9,10 +9,14 @@
 #   multi-az             = true
 #   skip_final_snapshot  = true
 # }
-
+resource "random_integer" "rndname" {
+  min = 11111
+  max = 99999
+}
 
 resource "aws_rds_cluster_parameter_group" "cluster_pg" {
-  name   = "udacity-pg-p"
+  #name   = "udacity-pg-p"
+  name   = "udacity-pg-p${random_integer.rndname.result}"
   family = "aurora5.6"
 
   parameter {
@@ -34,7 +38,7 @@ resource "aws_db_subnet_group" "udacity_db_subnet_group" {
 
 }
 resource "aws_rds_cluster" "udacity_cluster" {
-  cluster_identifier       = "udacity-db-cluster"
+  cluster_identifier       = "udacity-db-cluster${random_integer.rndname.result}"
   availability_zones       = ["us-east-2a", "us-east-2b"]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.cluster_pg.name
   database_name            = "udacityc2"

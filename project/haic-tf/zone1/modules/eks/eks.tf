@@ -1,3 +1,9 @@
+resource "random_integer" "rndname" {
+  min = 11111
+  max = 99999
+}
+
+
 resource "aws_security_group" "eks-cluster" {
   name        = "SG-eks-cluster"
   vpc_id      = var.vpc_id 
@@ -40,7 +46,7 @@ resource "aws_eks_cluster" "cluster" {
 
  resource "aws_eks_node_group" "node" {
    cluster_name    = aws_eks_cluster.cluster.name
-   node_group_name = "app-${var.name}-node-group"
+   node_group_name = "app-${var.name}-node-group${random_integer.rndname.result}"
    node_role_arn   = aws_iam_role.eks_node_cluster_role.arn
    subnet_ids      = var.private_subnet_ids
    instance_types  = [var.instance_type]
