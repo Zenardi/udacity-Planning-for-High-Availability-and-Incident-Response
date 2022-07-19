@@ -24,7 +24,7 @@ POLICY
 }
 
  resource "aws_iam_policy" "eks_node_instance_policy" {
-   name        = "app-${var.name}-instance-policy-${random_integer.rndname.result}"
+   name        = "app-${var.name}-instance-policy"
    description = "Policy allowing access to ${var.name} resources."
 
    policy = <<EOF

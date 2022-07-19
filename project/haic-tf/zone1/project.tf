@@ -1,13 +1,24 @@
 resource "kubernetes_namespace" "udacity" {
-   metadata {
-     name = local.name
-   }
-   depends_on = [
-     module.project_eks
-   ]
- }
+  metadata {
+    name = local.name
+  }
+  depends_on = [
+    module.project_eks
+  ]
+}
 
-  resource "kubernetes_service" "grafana-external" {
+
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+  depends_on = [
+    module.project_eks
+  ]
+}
+
+
+resource "kubernetes_service" "grafana-external" {
   metadata {
     name      = "grafana-external"
     namespace = "monitoring"
@@ -18,7 +29,7 @@ resource "kubernetes_namespace" "udacity" {
   }
   spec {
     selector = {
-      "app.kubernetes.io/name"="grafana"
+      "app.kubernetes.io/name" = "grafana"
     }
 
     port {
@@ -33,12 +44,3 @@ resource "kubernetes_namespace" "udacity" {
     module.project_eks
   ]
 }
-
-resource "kubernetes_namespace" "ns_monitoring" {
-  metadata {
-    name = "monitoring"
-  }
-  depends_on = [
-    module.project_eks
-  ]
-} 

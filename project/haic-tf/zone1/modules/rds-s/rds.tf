@@ -1,8 +1,7 @@
 variable primary_db_cluster_arn {}
 
 resource "aws_rds_cluster_parameter_group" "cluster_pg-s" {
-  # name   = "udacity-pg-s"
-  name   = "udacity-pg-s-${random_integer.rndname.result}"
+  name   = "udacity-pg-s"
   family = "aurora5.6"
 
   parameter {
@@ -17,19 +16,15 @@ resource "aws_rds_cluster_parameter_group" "cluster_pg-s" {
     apply_method = "pending-reboot"
   }
 }
-resource "random_integer" "rndname" {
-  min = 11111
-  max = 99999
-}
 
 resource "aws_db_subnet_group" "udacity_db_subnet_group" {
-  name       = "udacity_db_subnet_group${random_integer.rndname.result}"
+  name       = "udacity_db_subnet_group"
   subnet_ids = var.private_subnet_ids
 }
 
 resource "aws_rds_cluster" "udacity_cluster-s" {
   # cluster_identifier       = "udacity-db-cluster-s"
-  cluster_identifier       = "udacity-db-cluster-s${random_integer.rndname.result}"
+  cluster_identifier       = "udacity-db-cluster-s"
   availability_zones       = ["us-west-1b"]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.cluster_pg-s.name
   vpc_security_group_ids   = [aws_security_group.db_sg_2.id]

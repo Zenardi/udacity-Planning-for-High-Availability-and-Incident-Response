@@ -1,10 +1,3 @@
-resource "random_integer" "rndname" {
-  min = 11111
-  max = 99999
-}
-
-
-
 provider "kubernetes" {
    config_path            = "~/.kube/config"
    host                   = data.aws_eks_cluster.cluster.endpoint
@@ -13,11 +6,11 @@ provider "kubernetes" {
  }
 
  data "aws_eks_cluster" "cluster" {
-   name = "${module.project_eks.cluster_id}-${random_integer.rndname.result}"
+   name = module.project_eks.cluster_id
  }
 
  data "aws_eks_cluster_auth" "cluster" {
-   name = "module.project_eks.cluster_id${random_integer.rndname.result})"
+   name = module.project_eks.cluster_id
  }
 
  module "project_eks" {
