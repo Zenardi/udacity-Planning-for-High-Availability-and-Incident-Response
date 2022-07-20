@@ -9,6 +9,7 @@ variable primary_db_cluster_arn {}
 resource "aws_rds_cluster_parameter_group" "cluster_pg-s" {
   name   = "udacity-pg-s-${random_integer.sufix.result}"
   family = "aurora5.6"
+  depends_on = [var.primary_db_instance_arn]
 
   parameter {
     name  = "binlog_format"    
@@ -29,18 +30,19 @@ resource "aws_db_subnet_group" "udacity_db_subnet_group" {
 }
 
 resource "aws_rds_cluster" "udacity_cluster-s" {
-  cluster_identifier       = "udacity-db-cluster-s"
-  availability_zones       = ["us-west-1b"]
+  cluster_identifier              = "udacity-db-cluster-s"
+  availability_zones              = ["us-west-1a", "us-west-1b"]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.cluster_pg-s.name
-  vpc_security_group_ids   = [aws_security_group.db_sg_2.id]
-  db_subnet_group_name     = aws_db_subnet_group.udacity_db_subnet_group.name
-  engine_mode              = "provisioned"
-  engine_version           = "5.6.mysql_aurora.1.19.1" 
-  skip_final_snapshot      = true
-  storage_encrypted        = false
-  master_username          = "udacitysre42"
-  master_password          = "B4rbut8ch4rs"
-  backup_retention_period  = 5
+  vpc_security_group_ids          = [aws_security_group.db_sg_2.id]
+  db_subnet_group_name            = aws_db_subnet_group.udacity_db_subnet_group.name
+  engine_mode                     = "provisioned"
+  engine_version                  = "5.6.mysql_aurora.1.19.1" 
+  skip_final_snapshot             = true
+  storage_encrypted               = false
+  master_username                 = "udacitysre42"
+  master_password                 = "B4rbut8ch4rs"
+  backup_retention_period         = 5
+  replication_source_identifier   = var.primary_db_cluster_arn
   depends_on = [aws_rds_cluster_parameter_group.cluster_pg-s]
 }
 

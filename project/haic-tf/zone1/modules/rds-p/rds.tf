@@ -54,11 +54,11 @@ output "db_cluster_arn" {
 }
 
 output "db_instance_arn" {
-  value = aws_rds_cluster_instance.udacity_instance[0].arn
+  value = aws_rds_cluster_instance.udacity_instance[1].arn
 }
 
 resource "aws_rds_cluster_instance" "udacity_instance" {
-  count                = 1
+  count                = var.db_count
   identifier           = "udacity-db-instance-${count.index}"
   cluster_identifier   = aws_rds_cluster.udacity_cluster.id
   instance_class       = "db.t2.small"
